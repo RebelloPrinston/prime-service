@@ -8,6 +8,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import edu.iu.prebello.primeservice.model.Customer;
+import edu.iu.prebello.primeservice.repository.AuthenticationDBRepository;
 import edu.iu.prebello.primeservice.repository.IAuthenticationRepository;
 
 import java.io.IOException;
@@ -15,9 +16,9 @@ import java.io.IOException;
 @Service
 public class AuthenticationService implements IAuthenticationService, UserDetailsService {
 
-    IAuthenticationRepository authenticationRepository;
+    AuthenticationDBRepository authenticationRepository;
 
-    public AuthenticationService(IAuthenticationRepository authenticationRepository) {
+    public AuthenticationService(AuthenticationDBRepository authenticationRepository) {
         this.authenticationRepository = authenticationRepository;
     }
 
@@ -26,7 +27,14 @@ public class AuthenticationService implements IAuthenticationService, UserDetail
         BCryptPasswordEncoder bc = new BCryptPasswordEncoder();
         String passwordEncoded = bc.encode(customer.getPassword());
         customer.setPassword(passwordEncoded);
-        return authenticationRepository.save(customer);
+        try{
+            authenticationRepository.save(customer);
+            return true;
+        }
+        catch(Exception exception){
+            System.out.println(exception);
+            return false;
+        }     
     }
 
     @Override
@@ -45,7 +53,7 @@ public class AuthenticationService implements IAuthenticationService, UserDetail
                     .withUsername(username)
                     .password(customer.getPassword())
                     .build();
-        } catch (IOException e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
