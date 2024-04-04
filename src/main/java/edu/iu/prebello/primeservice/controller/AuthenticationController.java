@@ -3,6 +3,7 @@ package edu.iu.prebello.primeservice.controller;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,6 +15,7 @@ import edu.iu.prebello.primeservice.service.TokenService;
 import java.io.IOException;
 
 @RestController
+@CrossOrigin({"http://localhost:3000"})
 public class AuthenticationController {
 
     private final IAuthenticationService authenticationService;
