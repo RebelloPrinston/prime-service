@@ -16,6 +16,14 @@ services:
       environment:
         POSTGRES_PASSWORD: password
         POSTGRES_DB: primes
+    
+  history-database:
+      image: postgres:alpine
+      ports:
+        - "4008:5432"
+      environment:
+        POSTGRES_PASSWORD: password
+        POSTGRES_DB: history
 
   prime-service:
     image: prime-service
